@@ -21,6 +21,7 @@ export function CompanyQuestion({
   onCompleted,
   data,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onCompleted: (data: any) => void;
   data?: CompanyQuestionData;
 }) {

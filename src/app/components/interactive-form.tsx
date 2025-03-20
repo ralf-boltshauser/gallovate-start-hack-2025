@@ -33,8 +33,10 @@ type ButtonQuestion = {
 type ComponentQuestion = {
   type: "component";
   text: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component: React.FC<any>;
   next: (user: User) => string | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   action?: (data: any) => Promise<void>;
 };
 
@@ -101,9 +103,10 @@ const questionFlow: Record<string, Question> = {
     type: "component",
     component: CompanyQuestion,
     text: "What's the name of your company?",
-    next: (user: User) => {
+    next: () => {
       return "MainChallengeQuestion";
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     action: async (data: any) => {
       await companyInformationAction(data);
     },
@@ -179,7 +182,7 @@ const questionFlow: Record<string, Question> = {
         value: "PROCESS_OPTIMIZATION",
       },
     ],
-    next: (user: User) => {
+    next: () => {
       return "InnovationBarrierQuestion";
     },
     action: async (answer: string) => {
@@ -244,6 +247,7 @@ const questionFlow: Record<string, Question> = {
 
 type QuestionHistoryItem = {
   question: Question;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   answer: string | any;
 };
 
@@ -262,6 +266,7 @@ export default function ChatOnboarding() {
     return () => clearTimeout(timer);
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleAnswer = async (answer: string | any) => {
     // Perform any action associated with the current question.
     if (currentQuestion.action) {
@@ -336,6 +341,7 @@ export default function ChatOnboarding() {
                   <RenderQuestion
                     question={item.question}
                     answer={item.answer}
+                    myKey={`${item.question.type}-${item.question.text}`}
                   />
                 </div>
               </motion.div>
@@ -367,10 +373,10 @@ export default function ChatOnboarding() {
               {currentQuestion.text ===
                 "What's the biggest challenge for your company?" && (
                 <div className="mb-4">
-                  <h1 className="text-2xl font-bold">Hey! I'm Simon</h1>
+                  <h1 className="text-2xl font-bold">Hey! I&apos;m Simon</h1>
                   <p className="text-lg">
-                    Your personal innovation guide. Let's start shaping your
-                    unique path to innovation.
+                    Your personal innovation guide. Let&apos;s start shaping
+                    your unique path to innovation.
                   </p>
                 </div>
               )}

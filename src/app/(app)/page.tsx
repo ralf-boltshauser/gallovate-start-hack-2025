@@ -28,86 +28,120 @@ export default function App() {
       variants={container}
       initial="hidden"
       animate="show"
-      className="min-h-[calc(100vh-72px)] p-6 bg-gradient-to-b from-background via-background/95 to-primary/5"
+      className="relative min-h-[calc(100vh-72px)] "
     >
-      {/* Header */}
-      <motion.div variants={item} className="space-y-2">
-        <div className="flex items-center space-x-2">
-          <h1 className="text-2xl font-bold">
-            Hello, {user?.name || "Innovator"}!
-          </h1>
-          <Sparkles className="w-6 h-6 text-primary animate-pulse" />
-        </div>
-        <p className="text-muted-foreground">
-          Your journey to innovation starts here
-        </p>
-      </motion.div>
+      {/* Fading gradient overlay */}
 
-      {/* Welcome Card */}
-      <motion.div
-        variants={item}
-        className="mt-8 p-6 rounded-xl bg-primary/5 border border-primary/10 space-y-4"
-      >
-        <div className="flex items-center space-x-3">
-          <div className="p-2 rounded-full bg-primary/10">
-            <Lightbulb className="w-6 h-6 text-primary" />
-          </div>
-          <h2 className="text-xl font-semibold">Innovation Made Simple</h2>
-        </div>
-        <p className="text-muted-foreground leading-relaxed">
-          We&apos;re here to transform your innovative ideas into reality.
-          Whether you&apos;re just starting out or leading the charge, our
-          platform provides the tools, guidance, and community you need to
-          succeed.
-        </p>
-      </motion.div>
-
-      {/* Features */}
-      <motion.div variants={item} className="mt-8 space-y-4">
-        <h3 className="text-lg font-semibold flex items-center gap-2">
-          <Rocket className="w-5 h-5 text-primary" />
-          What&apos;s in store for you
-        </h3>
-        <div className="grid gap-4">
-          {[
-            {
-              title: "Latest Innovation News",
-              description:
-                "Stay updated with cutting-edge developments and trends",
-              href: "/news",
-            },
-            {
-              title: "Expert Guidance",
-              description: "Step-by-step guides to bring your ideas to life",
-              href: "/guides",
-            },
-            {
-              title: "AI-Powered Chat",
-              description: "Get instant answers to your innovation questions",
-              href: "/chat",
-            },
-          ].map((feature) => (
+      <div className="p-6 space-y-8">
+        {/* Header */}
+        <motion.div variants={item} className="space-y-2">
+          <div className="flex items-center space-x-2">
             <motion.div
-              key={feature.title}
-              variants={item}
-              className="group relative p-4 rounded-lg border bg-card hover:bg-accent transition-colors"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 10 }}
             >
-              <Link
-                href={feature.href}
-                className="flex items-center justify-between"
-              >
-                <div>
-                  <h4 className="font-medium">{feature.title}</h4>
-                  <p className="text-sm text-muted-foreground">
-                    {feature.description}
-                  </p>
-                </div>
-                <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-              </Link>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                Hello, {user?.name || "Innovator"}!
+              </h1>
             </motion.div>
-          ))}
-        </div>
-      </motion.div>
+            <Sparkles className="w-6 h-6 text-primary animate-pulse" />
+          </div>
+          <motion.p
+            className="text-muted-foreground text-lg"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            Your journey to innovation starts here
+          </motion.p>
+        </motion.div>
+
+        {/* Welcome Card */}
+        <motion.div
+          variants={item}
+          className="p-8 rounded-xl bg-primary/5 border border-primary/10 space-y-6 shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          <div className="flex items-center space-x-4">
+            <motion.div
+              className="p-3 rounded-full bg-primary/10"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Lightbulb className="w-8 h-8 text-primary" />
+            </motion.div>
+            <h2 className="text-2xl font-semibold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              Innovation Made Simple
+            </h2>
+          </div>
+          <p className="text-muted-foreground leading-relaxed text-lg">
+            We&apos;re here to transform your innovative ideas into reality.
+            Whether you&apos;re just starting out or leading the charge, our
+            platform provides the tools, guidance, and community you need to
+            succeed.
+          </p>
+        </motion.div>
+
+        {/* Features */}
+        <motion.div variants={item} className="space-y-6">
+          <h3 className="text-xl font-semibold flex items-center gap-3">
+            <motion.div
+              whileHover={{ rotate: 15 }}
+              transition={{ type: "spring", stiffness: 200, damping: 10 }}
+            >
+              <Rocket className="w-6 h-6 text-primary" />
+            </motion.div>
+            What&apos;s in store for you
+          </h3>
+          <div className="grid gap-6">
+            {[
+              {
+                title: "Latest Innovation News",
+                description:
+                  "Stay updated with cutting-edge developments and trends",
+                href: "/news",
+                icon: "📰",
+              },
+              {
+                title: "Expert Guidance",
+                description: "Step-by-step guides to bring your ideas to life",
+                href: "/guides",
+                icon: "🎯",
+              },
+              {
+                title: "AI-Powered Chat",
+                description: "Get instant answers to your innovation questions",
+                href: "/chat",
+                icon: "💬",
+              },
+            ].map((feature) => (
+              <motion.div
+                key={feature.title}
+                variants={item}
+                className="group relative p-6 rounded-xl border bg-card hover:bg-accent transition-all duration-300 shadow-md hover:shadow-lg"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Link
+                  href={feature.href}
+                  className="flex items-center justify-between"
+                >
+                  <div className="flex items-center space-x-4">
+                    <span className="text-2xl">{feature.icon}</span>
+                    <div>
+                      <h4 className="font-medium text-lg">{feature.title}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
     </motion.div>
   );
 }

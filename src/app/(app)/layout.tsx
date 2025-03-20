@@ -1,11 +1,13 @@
 "use client";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useUser } from "@/lib/context/user-context";
 import { UserType } from "@prisma/client";
 import { redirect } from "next/navigation";
-import BottomNav from "../features/app/bottom-nav";
+import { AppSidebar } from "../components/app-sidebar";
+import { TopNav } from "../features/top-nav";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const { user, bgColor } = useUser();
+  const { user } = useUser();
   console.log("user", user);
   console.log("tried / page");
   console.log("user?.onboarded", user?.onboarded);
@@ -19,9 +21,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className={`min-h-screen pb-[72px] ${bgColor}`}>
-      {children}
-      <BottomNav />
+    <div className="w-full h-full flex flex-col justify-stretch">
+      <SidebarProvider className="flex-1 w-full">
+        <AppSidebar />
+        <main className="w-full">
+          <TopNav>
+            <SidebarTrigger />
+          </TopNav>
+          {children}
+        </main>
+      </SidebarProvider>
     </div>
   );
 }
