@@ -5,7 +5,7 @@ import { UserType } from "@prisma/client";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-export function TopNav({ children }: { children: React.ReactNode }) {
+export function TopNav({ children }: { children?: React.ReactNode }) {
   const { user } = useUser();
   return (
     <div className="h-20 px-4 bg-white flex items-center justify-between shadow-md z-[5] relative w-full gap-4">
