@@ -26,10 +26,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const bgColor = getUserTypeBgColor(user?.type || UserType.NONE);
-  function updateTheme(primaryColor: string, backgroundColor: string) {
-    document.documentElement.style.setProperty("--primary", primaryColor);
-    document.documentElement.style.setProperty("--background", backgroundColor);
-  }
+  // function updateTheme(primaryColor: string, backgroundColor: string) {
+  //   document.documentElement.style.setProperty("--primary", primaryColor);
+  //   document.documentElement.style.setProperty("--background", backgroundColor);
+  // }
 
   const fetchUser = async () => {
     try {

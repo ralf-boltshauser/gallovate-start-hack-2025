@@ -1,24 +1,25 @@
 "use client";
 
-import { parseAsInteger, useQueryState } from "nuqs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@/lib/context/user-context";
-import { AnimatePresence, motion } from "framer-motion";
-import { onboardUser } from "../actions";
 import BiggestChallengeQuestion from "@/features/onboarding/questions/biggest-challenge-question";
-import TechnologyApproachQuestion from "@/features/onboarding/questions/technology-approach-question";
-import InnovationOpinionQuestion from "@/features/onboarding/questions/innovation-opinion-question";
 import CompagnyQuestion from "@/features/onboarding/questions/company-question";
-import { User, UserType } from "@prisma/client";
 import CompletionChoiceClueless from "@/features/onboarding/questions/completion-choice-clueless";
-import MainChallengeQuestion from "@/features/onboarding/questions/main-challenge-question";
-import DecisionMakingQuestion from "@/features/onboarding/questions/decision-making-question";
-import InnovationTopicsQuestion from "@/features/onboarding/questions/innovation-topics-question";
 import CompletionChoiceHesitant from "@/features/onboarding/questions/completion-choice-hesitant";
+import DecisionMakingQuestion from "@/features/onboarding/questions/decision-making-question";
 import InnovationBarrierQuestion from "@/features/onboarding/questions/innovation-barrier-question";
+import InnovationOpinionQuestion from "@/features/onboarding/questions/innovation-opinion-question";
 import InnovationSupportQuestion from "@/features/onboarding/questions/innovation-support-question";
+import InnovationTopicsQuestion from "@/features/onboarding/questions/innovation-topics-question";
+import MainChallengeQuestion from "@/features/onboarding/questions/main-challenge-question";
+import TechnologyApproachQuestion from "@/features/onboarding/questions/technology-approach-question";
+import { useUser } from "@/lib/context/user-context";
+import { User, UserType } from "@prisma/client";
+import { AnimatePresence, motion } from "framer-motion";
+import { useQueryState } from "nuqs";
+import { onboardUser } from "../actions";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const questionFlow: Record<string, any> = {
   BiggestChallenge: {
     component: BiggestChallengeQuestion,

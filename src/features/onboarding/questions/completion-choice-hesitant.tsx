@@ -33,11 +33,12 @@ export default function CompletionChoiceHesitant({
     >
       <motion.div variants={item} className="space-y-2">
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/50 bg-clip-text text-transparent">
-          You're All Set!
+          You&apos;re All Set!
         </h1>
         <p className="text-muted-foreground">
-          You've filled in all the mandatory fields. You can start using the app
-          now or answer more questions for a better-personalized experience.
+          You&apos;ve filled in all the mandatory fields. You can start using
+          the app now or answer more questions for a better-personalized
+          experience.
         </p>
       </motion.div>
 

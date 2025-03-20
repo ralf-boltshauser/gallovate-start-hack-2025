@@ -58,7 +58,7 @@ export default function TechnologyApproachQuestion({
           How do you approach new technologies?
         </h1>
         <p className="text-muted-foreground">
-          Choose the option that best reflects your company's mindset.
+          Choose the option that best reflects your company&apos;s mindset.
         </p>
       </motion.div>
 
