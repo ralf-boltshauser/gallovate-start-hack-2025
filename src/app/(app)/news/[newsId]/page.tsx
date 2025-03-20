@@ -1,9 +1,9 @@
 import { getOrCreateAnonymousUser } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/client";
-import { cn } from "@/lib/utils";
 import { UserType } from "@prisma/client";
-import { MessageCircle } from "lucide-react";
+import { Separator } from "@radix-ui/react-separator";
+import { Lightbulb, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 
@@ -25,6 +25,7 @@ export default async function NewsDetailPage({
       id: newsId,
     },
   });
+  console.log(news);
 
   if (!news) {
     return (
@@ -70,16 +71,27 @@ export default async function NewsDetailPage({
         </div>
       )}
 
-      <div
-        className={cn(
-          "prose prose-lg dark:prose-invert max-w-none",
-          "prose-headings:font-semibold prose-a:text-blue-600 dark:prose-a:text-blue-400",
-          "prose-strong:text-gray-900 dark:prose-strong:text-gray-100",
-          "prose-code:text-gray-900 dark:prose-code:text-gray-100",
-          "prose-pre:bg-gray-900 dark:prose-pre:bg-gray-800"
+      <div className="container max-w-4xl mx-auto px-4 py-8">
+        <div className="prose prose-lg max-w-none dark:prose-invert">
+          <ReactMarkdown>{news.text}</ReactMarkdown>
+        </div>
+
+        <Separator className="my-8" />
+        {news.personalizedRecommendation}
+
+        {news.personalizedRecommendation && (
+          <div className="mt-8">
+            <div className="flex items-center gap-2 mb-4">
+              <Lightbulb className="h-5 w-5 text-primary" />
+              <h2 className="text-xl font-semibold text-primary">
+                Personalized Insight
+              </h2>
+            </div>
+            <div className="prose prose-lg max-w-none dark:prose-invert bg-primary/5 p-6 rounded-lg">
+              <ReactMarkdown>{news.personalizedRecommendation}</ReactMarkdown>
+            </div>
+          </div>
         )}
-      >
-        <ReactMarkdown>{news.text}</ReactMarkdown>
       </div>
     </article>
   );

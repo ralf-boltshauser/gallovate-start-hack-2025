@@ -13,6 +13,7 @@ async function main() {
         title: news.title,
         text: news.text,
         imageUrl: news.imageUrl || null,
+        personalizedRecommendation: news.personalizedRecommendation || null,
         publisher: news.publisher,
         job: news.job,
       },

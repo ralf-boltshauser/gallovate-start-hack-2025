@@ -13,10 +13,11 @@ export async function callAction() {
     const call = await client.calls.create({
       from: "+12082477196",
       to: "+41765065088",
+      // to: "+41786305531",
       // to: "+41791996708",
       twiml: `<Response>
     <Pause length="1"/>
-  <Play>https://0gdvtnvfey.ufs.sh/f/jIVaTjix9anHtHqYXWeUutKlNAoOpySP19jfXEJQH3CkGbrh</Play>
+    <Say>This ai voice? mf</Say>
       <Pause length="15"/>
 </Response>`,
     });

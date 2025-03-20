@@ -83,12 +83,13 @@ model GuideCompletion {
 }
 
 model News {
-  id          String   @id @default(uuid())
-  title       String
-  text        String   @db.Text
-  imageUrl    String?
-  publishedAt DateTime @default(now())
-  publisher   String
-  job         Job // Links to a specific job category
-  createdAt   DateTime @default(now())
+  id                         String   @id @default(uuid())
+  title                      String
+  text                       String   @db.Text
+  personalizedRecommendation String?
+  imageUrl                   String?
+  publishedAt                DateTime @default(now())
+  publisher                  String
+  job                        Job // Links to a specific job category
+  createdAt                  DateTime @default(now())
 }

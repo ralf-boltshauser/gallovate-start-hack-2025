@@ -1,5 +1,7 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { callAction } from "@/features/app/call/call-actions";
 import { useUser } from "@/lib/context/user-context";
 import { UserType } from "@prisma/client";
 import { motion } from "framer-motion";
@@ -28,6 +30,14 @@ export function TopNav({ children }: { children?: React.ReactNode }) {
             )}
           </>
         ) : null}
+        <Button
+          onClick={() => {
+            alert("calling!");
+            callAction();
+          }}
+        >
+          Call
+        </Button>
       </div>
     </div>
   );
