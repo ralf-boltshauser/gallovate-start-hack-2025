@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,14 +7,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { callAction } from "../app/call/call-actions";
 
 export default function CallDialog() {
   const router = useRouter();
   const handleSubmit = () => {
-    callAction();
+    // callAction();
     router.push("/call-later");
   };
 
