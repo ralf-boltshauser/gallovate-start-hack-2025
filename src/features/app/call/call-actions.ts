@@ -9,9 +9,11 @@ export async function callAction() {
 
   async function createCall() {
     console.log("createCall");
+    console.log("calling marco");
     const call = await client.calls.create({
       from: "+12082477196",
       to: "+41765065088",
+      // to: "+41791996708",
       twiml: `<Response>
     <Pause length="1"/>
   <Play>https://0gdvtnvfey.ufs.sh/f/jIVaTjix9anHtHqYXWeUutKlNAoOpySP19jfXEJQH3CkGbrh</Play>
