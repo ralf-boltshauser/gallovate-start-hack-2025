@@ -44,37 +44,38 @@ export default async function GuidePage({
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* Hero section with image and title */}
-      <div className="relative w-full h-[40vh] min-h-[250px]">
+      {/* Hero section */}
+      <div className="relative w-full h-[300px]">
         <img
           src={guide.imageUrl || "/placeholder.svg"}
           alt="Guide hero image"
-          className="object-cover brightness-[0.5] rounded-b-2xl"
+          className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 flex items-center justify-center p-6">
-          <h1 className="text-3xl font-bold text-center text-white drop-shadow-md">
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="relative h-full flex items-center justify-center px-4">
+          <h1 className="text-4xl font-bold text-white text-center">
             {guide.title}
           </h1>
         </div>
       </div>
 
-      {/* Guide content */}
-      <div className="flex-1 px-4 py-6 max-w-4xl mx-auto w-full pt-16">
-        <div className="prose prose-sm max-w-none dark:prose-invert">
+      {/* Main content */}
+      <div className="container max-w-4xl mx-auto px-4 py-8">
+        <div className="prose prose-lg max-w-none dark:prose-invert">
           <ReactMarkdown>{guide.text}</ReactMarkdown>
         </div>
 
         <Separator className="my-8" />
 
         {/* AI Recommendation section */}
-        <div className="mt-6">
+        <div className="mt-8">
           <div className="flex items-center gap-2 mb-4">
             <Lightbulb className="h-5 w-5 text-primary" />
             <h2 className="text-xl font-semibold text-primary">
               AI Recommendations
             </h2>
           </div>
-          <div className="prose prose-sm max-w-none dark:prose-invert bg-primary/5 p-4 rounded-lg">
+          <div className="prose prose-lg max-w-none dark:prose-invert bg-primary/5 p-6 rounded-lg">
             <ReactMarkdown>{guide.aiRecommendation}</ReactMarkdown>
           </div>
         </div>
