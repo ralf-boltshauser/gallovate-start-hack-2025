@@ -38,6 +38,13 @@ export async function getOrCreateAnonymousUser() {
   return newUser;
 }
 
+export async function resetUser() {
+  const cookieStore = await cookies();
+  cookieStore.delete(ANON_COOKIE_NAME);
+
+  redirect("/");
+}
+
 export type AnonymousUser = Awaited<
   ReturnType<typeof getOrCreateAnonymousUser>
 >;

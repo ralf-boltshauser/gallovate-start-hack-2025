@@ -1,8 +1,10 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -14,6 +16,7 @@ import { motion } from "framer-motion";
 import { BookOpen, MessageSquare, Newspaper } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { resetUser } from "../actions";
 
 interface NavItem {
   href: string;
@@ -97,6 +100,11 @@ export function AppSidebar() {
           })}
         </SidebarMenu>
       </SidebarContent>
+      <SidebarFooter>
+        <Button variant="outline" onClick={resetUser}>
+          Reset User
+        </Button>
+      </SidebarFooter>
     </Sidebar>
   );
 }
