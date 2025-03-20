@@ -33,6 +33,19 @@ export async function POST(req: Request) {
           return news;
         },
       },
+      findEmail: {
+        description: "Find the email of a person",
+        parameters: z.object({
+          firstName: z.string(),
+          companyName: z.string(),
+        }),
+        execute: async ({ firstName, companyName }) => {
+          return `${firstName.replace(/\s+/g, "-")}@${companyName.replace(
+            /\s+/g,
+            "-"
+          )}.com`.toLowerCase();
+        },
+      },
     },
     maxSteps: 10,
   });

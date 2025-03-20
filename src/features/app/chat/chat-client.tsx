@@ -160,6 +160,60 @@ export default function Chat({
                             )}
                           </div>
                         )}
+                      {part.toolInvocation.toolName === "findEmail" &&
+                        part.toolInvocation.state == "result" && (
+                          <div className="mt-4 border-t border-zinc-200 dark:border-zinc-700 pt-4">
+                            <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-2">
+                              Sources & References:
+                            </p>
+                            {(() => {
+                              const email = part.toolInvocation.result;
+                              const companyName = email
+                                .split("@")[1]
+                                .split(".")[0];
+                              return (
+                                <div
+                                  key={email}
+                                  className="mb-2 block last:mb-0"
+                                >
+                                  <Link
+                                    href={`mailto:${email}`}
+                                    className="p-3 rounded-md bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 block"
+                                  >
+                                    <p className="text-sm font-medium flex items-center gap-2">
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="16"
+                                        height="16"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className="text-zinc-400"
+                                      >
+                                        <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
+                                      </svg>
+                                      {email}
+                                    </p>
+                                  </Link>
+                                  <p className="text-xs text-zinc-500 mt-1 pl-3">
+                                    Source:{" "}
+                                    <a
+                                      href={`https://${companyName}.org/about`}
+                                      className="underline hover:text-zinc-700"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      {companyName}.com/about
+                                    </a>
+                                  </p>
+                                </div>
+                              );
+                            })()}
+                          </div>
+                        )}
                     </React.Fragment>
                   ))}
               </>
