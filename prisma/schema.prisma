@@ -21,11 +21,43 @@ enum UserType {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  phone     String?
-  onboarded Boolean  @default(false)
-  type      UserType @default(NONE)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                         String   @id @default(uuid())
+  name                       String
+  phone                      String?
+  onboarded                  Boolean  @default(false)
+  type                       UserType @default(NONE)
+  job                        Job?
+  numberOfEmployees          Int?
+  biggestChallengeQuestion   String?
+  mainChallengeQuestion      String?
+  decisionMakingQuestion     String?
+  innovationTopicsQuestion   String?
+  innovationBarrierQuestion  String?
+  innovationSupportQuestion  String?
+  technologyApproachQuestion String?
+  innovationOpinionQuestion  String?
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+}
+
+enum Job {
+  MANUFACTURING
+  MECHANICAL_ENGINEER
+  CONSTRUCTION
+  ENERGY
+  AEROSPACE
+  PHARMACEUTICAL
+  LOGISTICS
+  SOFTWARE
+  FINTECH
+}
+
+model News {
+  id          String   @id @default(uuid())
+  title       String
+  text        String   @db.Text
+  imageUrl    String?
+  publishedAt DateTime @default(now())
+  publisher   String
+  job         Job // Links to a specific job category
 }

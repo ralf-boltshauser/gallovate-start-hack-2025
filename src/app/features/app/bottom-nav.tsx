@@ -15,6 +15,7 @@ interface NavItem {
 }
 
 const navItems: Record<UserType, NavItem[]> = {
+  NONE: [],
   CLUELESS: [
     { href: "/news", icon: <Newspaper className="w-6 h-6" />, label: "News" },
   ],

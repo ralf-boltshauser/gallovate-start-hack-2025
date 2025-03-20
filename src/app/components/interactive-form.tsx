@@ -1,25 +1,99 @@
 "use client";
 
 import { parseAsInteger, useQueryState } from "nuqs";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import InnovationKnowledgeQuestion from "@/features/onboarding/questions/innovation-knowledge-question";
 import { useUser } from "@/lib/context/user-context";
 import { AnimatePresence, motion } from "framer-motion";
 import { onboardUser } from "../actions";
+import BiggestChallengeQuestion from "@/features/onboarding/questions/biggest-challenge-question";
+import TechnologyApproachQuestion from "@/features/onboarding/questions/technology-approach-question";
+import InnovationOpinionQuestion from "@/features/onboarding/questions/innovation-opinion-question";
+import CompagnyQuestion from "@/features/onboarding/questions/company-question";
+import { User, UserType } from "@prisma/client";
+import CompletionChoiceClueless from "@/features/onboarding/questions/completion-choice-clueless";
+import MainChallengeQuestion from "@/features/onboarding/questions/main-challenge-question";
+import DecisionMakingQuestion from "@/features/onboarding/questions/decision-making-question";
+import InnovationTopicsQuestion from "@/features/onboarding/questions/innovation-topics-question";
+import CompletionChoiceHesitant from "@/features/onboarding/questions/completion-choice-hesitant";
+import InnovationBarrierQuestion from "@/features/onboarding/questions/innovation-barrier-question";
+import InnovationSupportQuestion from "@/features/onboarding/questions/innovation-support-question";
+
+const questionFlow: Record<string, any> = {
+  BiggestChallenge: {
+    component: BiggestChallengeQuestion,
+    next: (user: User, answer: string) => {
+      if (answer === "STABILITY") return "TechnologyApproachQuestion";
+      if (answer === "BEING_AHEAD") return "InnovationOpinionQuestion";
+      return null;
+    },
+  },
+  TechnologyApproachQuestion: {
+    component: TechnologyApproachQuestion,
+    next: () => "CompagnyQuestion",
+  },
+  InnovationOpinionQuestion: {
+    component: InnovationOpinionQuestion,
+    next: () => "CompagnyQuestion",
+  },
+  CompagnyQuestion: {
+    component: CompagnyQuestion,
+    next: (user: User) => {
+      if (user.type === UserType.CLUELESS) return "CompletionChoiceClueless";
+      return "MainChallengeQuestion";
+    },
+  },
+  CompletionChoiceClueless: {
+    component: CompletionChoiceClueless,
+    next: (user: User, answer: string) => {
+      if (answer === "true") return "MainChallengeQuestion";
+      return "completed";
+    },
+  },
+  MainChallengeQuestion: {
+    component: MainChallengeQuestion,
+    next: () => "DecisionMakingQuestion",
+  },
+  DecisionMakingQuestion: {
+    component: DecisionMakingQuestion,
+    next: () => "InnovationTopicsQuestion",
+  },
+  InnovationTopicsQuestion: {
+    component: InnovationTopicsQuestion,
+    next: () => "CompletionChoiceHesitant",
+  },
+  CompletionChoiceHesitant: {
+    component: CompletionChoiceHesitant,
+    next: (user: User, answer: string) => {
+      if (answer === "true") return "InnovationBarrierQuestion";
+      return "completed";
+    },
+  },
+  InnovationBarrierQuestion: {
+    component: InnovationBarrierQuestion,
+    next: () => "InnovationSupportQuestion",
+  },
+  InnovationSupportQuestion: {
+    component: InnovationSupportQuestion,
+    next: () => "completed",
+  },
+};
 
 export function InteractiveForm() {
-  const questions = [InnovationKnowledgeQuestion];
-  const { refetch } = useUser();
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useQueryState(
-    "questionIndex",
-    parseAsInteger
+  const { user, refetch } = useUser(); // Access user data including previous answers
+  const [currentQuestionKey, setCurrentQuestionKey] = useQueryState(
+    "questionKey",
+    { defaultValue: "BiggestChallenge" }
   );
 
-  const handleComplete = () => {
-    refetch();
-    setCurrentQuestionIndex(currentQuestionIndex ?? 0 + 1);
+  // Start with the first question if not set
+  const currentQuestion =
+    questionFlow[currentQuestionKey ?? "BiggestChallenge"];
+
+  const handleComplete = (answer: string) => {
+    refetch(); // Update user data
+    const nextQuestionKey = currentQuestion.next(user, answer);
+    setCurrentQuestionKey(nextQuestionKey ?? "completed"); // Set next question or mark as completed
   };
 
   const handleOnboarded = async () => {
@@ -46,63 +120,21 @@ export function InteractiveForm() {
           </div>
         </div>
 
-        {/* Answered questions */}
-        {/* <div className="space-y-4">
-          <AnimatePresence>
-            {Object.entries(answers).map(([questionId, answer]) => {
-              const question = questions.find((q) => q.id === questionId);
-              const option = question?.options?.find(
-                (opt) => opt.value === answer
-              );
-
-              return (
-                <motion.div
-                  key={questionId}
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  className="bg-secondary/50 rounded-lg p-4"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <ChevronUp className="w-4 h-4 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm text-muted-foreground">
-                          {question?.text}
-                        </p>
-                        <p className="font-medium">
-                          {option ? (
-                            <span className="flex items-center space-x-2">
-                              {option.icon}
-                              <span>{option.label}</span>
-                            </span>
-                          ) : (
-                            answer
-                          )}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
-        </div> */}
-
         {/* Current question */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={currentQuestionIndex}
+            key={currentQuestionKey}
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -20, opacity: 0 }}
             className="space-y-8"
           >
-            {questions[currentQuestionIndex ?? 0]?.({
-              onCompleted: handleComplete,
-            })}
+            {currentQuestion?.component && (
+              <currentQuestion.component onCompleted={handleComplete} />
+            )}
           </motion.div>
         </AnimatePresence>
+
         <Button onClick={handleOnboarded}>Onboard</Button>
       </div>
     </main>
