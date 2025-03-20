@@ -43,7 +43,7 @@ const navItems: Record<UserType, NavItem[]> = {
 };
 
 export default function BottomNav() {
-  const { user } = useUser();
+  const { user, bgColor } = useUser();
   const pathname = usePathname();
 
   if (!user) return null;
@@ -51,7 +51,9 @@ export default function BottomNav() {
   const items = navItems[user.type];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 border-t bg-background/80 backdrop-blur-lg">
+    <div
+      className={`fixed bottom-0 left-0 right-0 border-t bg-background/80 backdrop-blur-lg ${bgColor}`}
+    >
       <nav className="max-w-md mx-auto px-8 py-2">
         <ul className="flex justify-around items-center">
           {items.map((item) => {

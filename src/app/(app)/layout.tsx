@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import BottomNav from "../features/app/bottom-nav";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const { user } = useUser();
+  const { user, bgColor } = useUser();
   console.log("user", user);
   console.log("tried / page");
   console.log("user?.onboarded", user?.onboarded);
@@ -17,8 +17,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   if (user?.type === UserType.NONE) {
     redirect("/onboarding");
   }
+
   return (
-    <div className="min-h-screen pb-[72px]">
+    <div className={`min-h-screen pb-[72px] ${bgColor}`}>
       {children}
       <BottomNav />
     </div>

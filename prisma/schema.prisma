@@ -60,4 +60,5 @@ model News {
   publishedAt DateTime @default(now())
   publisher   String
   job         Job // Links to a specific job category
+  createdAt   DateTime @default(now())
 }

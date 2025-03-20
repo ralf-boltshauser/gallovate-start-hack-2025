@@ -1,6 +1,7 @@
 "use client";
 
 import { getOrCreateAnonymousUser, type AnonymousUser } from "@/app/actions";
+import { UserType } from "@prisma/client";
 import {
   createContext,
   useContext,
@@ -8,11 +9,13 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { getUserTypeBgColor } from "../user-type";
 
 interface UserContextType {
   user: AnonymousUser | null;
   isLoading: boolean;
   error: Error | null;
+  bgColor: string;
   refetch: () => Promise<void>;
 }
 
@@ -22,6 +25,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AnonymousUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const bgColor = getUserTypeBgColor(user?.type || UserType.NONE);
+  function updateTheme(primaryColor: string, backgroundColor: string) {
+    document.documentElement.style.setProperty("--primary", primaryColor);
+    document.documentElement.style.setProperty("--background", backgroundColor);
+  }
 
   const fetchUser = async () => {
     try {
@@ -36,12 +44,21 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // TODO dynamically set theme
+  // useEffect(() => {
+  //   updateTheme(
+  //     getUserTypePrimaryColor(user?.type || UserType.NONE),
+  //     getUserTypePrimaryColor(user?.type || UserType.NONE)
+  //   );
+  // }, [user]);
+
   useEffect(() => {
     fetchUser();
   }, []);
 
   const value = {
     user,
+    bgColor,
     isLoading,
     error,
     refetch: fetchUser,

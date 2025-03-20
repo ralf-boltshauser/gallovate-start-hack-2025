@@ -1,11 +1,13 @@
-const { PrismaClient } = require("@prisma/client");
-const fs = require("fs");
+import { PrismaClient } from "@prisma/client";
+import fs from "node:fs";
 
 const prisma = new PrismaClient();
 
 async function main() {
   // Read and parse data.json
-  const rawData = fs.readFileSync("data.json");
+  // console log pwd
+  console.log("pwd", process.cwd());
+  const rawData = fs.readFileSync("./prisma/data.json", "utf-8");
   const newsData = JSON.parse(rawData);
 
   for (const news of newsData) {

@@ -7,10 +7,10 @@ export default function OnboardingLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user } = useUser();
+  const { user, bgColor } = useUser();
   console.log("user", user);
   if (user?.onboarded) {
     redirect("/");
   }
-  return <div>{children}</div>;
+  return <div className={`${bgColor}`}>{children}</div>;
 }
