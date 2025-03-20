@@ -1,7 +1,7 @@
-import { CheckCircle2, Lock, Star } from "lucide-react";
+import { getOrCreateAnonymousUser } from "@/app/actions";
 import { Progress } from "@/components/ui/progress";
 import { prisma } from "@/lib/client";
-import { getOrCreateAnonymousUser } from "@/app/actions";
+import { CheckCircle2, Lock } from "lucide-react";
 import Link from "next/link";
 
 export default async function GuidesPage() {
@@ -91,7 +91,7 @@ export default async function GuidesPage() {
                 );
 
                 return (
-                  <div key={guide.id} className="w-full max-w-[280px] relative">
+                  <div key={guide.id} className="w-full relative">
                     {isLocked ? (
                       guideButton
                     ) : (

@@ -26,7 +26,7 @@ async function main() {
     await prisma.guide.create({
       data: {
         aiRecommendation: guide.aiRecommendation,
-        imageUrl: guide.heroImage,
+        imageUrl: guide.imageUrl,
         title: guide.title,
         text: guide.text,
         shortDescription: guide.shortDescription,

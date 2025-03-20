@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { Check, Trophy } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { markGuideAsFinished } from "@/app/actions";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Check, Trophy } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface GuideCompletionProps {
   guideId: string;
@@ -20,6 +21,7 @@ export function GuideCompletion({
   const [completed, setCompleted] = useState(isCompleted);
   const [isLoading, setIsLoading] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
+  const router = useRouter();
 
   const handleMarkAsFinished = async () => {
     if (completed || isLoading) return;
@@ -36,6 +38,7 @@ export function GuideCompletion({
         // Hide animation after 4 seconds
         setTimeout(() => {
           setShowAnimation(false);
+          router.push(`/guides`);
         }, 4000);
       }
     } catch (error) {
