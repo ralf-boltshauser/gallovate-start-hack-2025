@@ -8,6 +8,7 @@ export async function callAction() {
   const client = twilio(accountSid, authToken);
 
   async function createCall() {
+    console.log("createCall");
     const call = await client.calls.create({
       from: "+12082477196",
       to: "+41786305531",
