@@ -2,6 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import CallDialog from "@/features/onboarding/call-dialog";
 import BiggestChallengeQuestion from "@/features/onboarding/questions/biggest-challenge-question";
 import CompagnyQuestion from "@/features/onboarding/questions/company-question";
 import CompletionChoiceClueless from "@/features/onboarding/questions/completion-choice-clueless";
@@ -104,6 +105,9 @@ export function InteractiveForm() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-secondary/20 flex items-center justify-center p-4">
+      <div className="fixed top-4 left-4">
+        <CallDialog />
+      </div>
       <div className="max-w-xl w-full space-y-8 animate-fade-in">
         {/* Avatar and greeting */}
         <div className="flex items-center space-x-4">
