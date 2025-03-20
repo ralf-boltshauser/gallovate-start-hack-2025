@@ -22,14 +22,14 @@ const navItems: Record<UserType, NavItem[]> = {
   MOTIVATED: [
     { href: "/news", icon: <Newspaper className="w-6 h-6" />, label: "News" },
     {
-      href: "/guides",
-      icon: <BookOpen className="w-6 h-6" />,
-      label: "Guides",
-    },
-    {
       href: "/chat",
       icon: <MessageSquare className="w-6 h-6" />,
       label: "Chat",
+    },
+    {
+      href: "/guides",
+      icon: <BookOpen className="w-6 h-6" />,
+      label: "Guides",
     },
   ],
   HESITANT: [

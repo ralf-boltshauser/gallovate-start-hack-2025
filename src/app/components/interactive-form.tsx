@@ -62,7 +62,10 @@ const questionFlow: Record<string, any> = {
   },
   InnovationTopicsQuestion: {
     component: InnovationTopicsQuestion,
-    next: () => "CompletionChoiceHesitant",
+    next: (user: User) => {
+      if (user.type === UserType.HESITANT) return "CompletionChoiceHesitant";
+      return "InnovationBarrierQuestion";
+    },
   },
   CompletionChoiceHesitant: {
     component: CompletionChoiceHesitant,

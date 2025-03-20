@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "title": "How to Improve Customer Retention",
+    "shortTitle": "Retention Boost",
+    "shortDescription": "Increase customer loyalty and retention.",
+    "text": "# Understanding Customer Retention\n\nCustomer retention is the ability of a company to retain its customers over a specified period. High customer retention means customers of the business tend to return to, continue to buy from, or in some other way not defect to another business.\n\n## Why Customer Retention Matters\n\n- **Cost Efficiency**: Acquiring a new customer can cost five times more than retaining an existing customer.\n- **Increased Profits**: Increasing customer retention by just 5% can increase profits by 25-95%.\n- **Loyal Advocates**: Long-term customers become brand advocates and refer new customers.\n\n## Key Strategies\n\n1. **Deliver Exceptional Customer Service**\n   - Respond quickly to inquiries\n   - Provide multiple support channels\n   - Train staff to handle issues effectively\n\n2. **Implement a Customer Feedback Loop**\n   - Regular surveys\n   - Follow up on feedback\n   - Make visible improvements based on suggestions\n\n3. **Create a Loyalty Program**\n   - Reward repeat purchases\n   - Offer exclusive benefits\n   - Recognize customer milestones",
+    "imageUrl": "/placeholder.svg?height=400&width=800",
+    "aiRecommendation": "## AI Recommendations\n\n1. **Focus on Onboarding Improvement**\n   - Implement a structured onboarding program with checkpoints at days 1, 7, and 14.\n\n2. **Segment Your Retention Strategy**\n   - Develop separate retention programs for enterprise and small business customers.\n\n3. **Leverage Your Product's Strengths**\n   - Highlight high-retention features during onboarding.\n\n4. **Next Steps:**\n   - Implement an NPS survey at the 14-day mark\n   - Develop a 'quick win' guide for new customers",
+    "publishedAt": "2024-03-20T12:00:00Z",
+    "createdAt": "2024-03-20T12:00:00Z",
+    "order": 1
+  },
+  {
+    "id": "2",
+    "title": "Best Practices for E-commerce Growth",
+    "shortTitle": "E-commerce Tips",
+    "shortDescription": "Boost sales and improve store performance.",
+    "text": "# Boosting E-commerce Growth\n\nE-commerce success depends on various factors, including product quality, customer experience, and marketing strategies.\n\n## Key Strategies\n\n1. **Optimize Your Website**\n   - Ensure fast loading times\n   - Use a mobile-friendly design\n\n2. **Leverage Social Media Marketing**\n   - Engage with customers on social platforms\n   - Run targeted ad campaigns\n\n3. **Improve Customer Support**\n   - Offer live chat support\n   - Respond to inquiries within 24 hours",
+    "imageUrl": "/placeholder.svg?height=400&width=800",
+    "aiRecommendation": "## AI Recommendations\n\n1. **Personalized Shopping Experience**\n   - Use AI-powered recommendations based on browsing history.\n\n2. **Retargeting Strategies**\n   - Implement abandoned cart emails to recover lost sales.\n\n3. **Next Steps:**\n   - Test different pricing strategies\n   - Optimize checkout flow for higher conversions",
+    "publishedAt": "2024-03-20T12:00:00Z",
+    "createdAt": "2024-03-20T12:00:00Z",
+    "order": 2
+  },
+  {
+    "id": "3",
+    "title": "Enhancing Employee Productivity",
+    "shortTitle": "Boost Productivity",
+    "shortDescription": "Improve workplace efficiency.",
+    "text": "# Boosting Workplace Productivity\n\nEmployee productivity is crucial for business success. Here’s how you can improve it.\n\n## Key Strategies\n\n1. **Encourage Work-Life Balance**\n   - Promote flexible working hours\n   - Offer wellness programs\n\n2. **Use Productivity Tools**\n   - Leverage project management software\n   - Automate repetitive tasks\n\n3. **Enhance Workplace Culture**\n   - Foster open communication\n   - Recognize and reward high performers",
+    "imageUrl": "/placeholder.svg?height=400&width=800",
+    "aiRecommendation": "## AI Recommendations\n\n1. **Implement AI-based Task Automation**\n   - Reduce manual workload with smart task delegation.\n\n2. **Employee Engagement Metrics**\n   - Track productivity trends and adjust strategies accordingly.\n\n3. **Next Steps:**\n   - Conduct an internal productivity survey\n   - Introduce AI-powered chatbots for support",
+    "publishedAt": "2024-03-20T12:00:00Z",
+    "createdAt": "2024-03-20T12:00:00Z",
+    "order": 3
+  }
+]

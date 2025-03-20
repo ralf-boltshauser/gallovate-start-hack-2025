@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/client";
-import { UserType } from "@prisma/client";
+import { GuideCompletionType, UserType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -63,14 +63,88 @@ export async function submitAnswer(formData: FormData) {
 export async function onboardUser() {
   const user = await getOrCreateAnonymousUser();
   console.log("onboarding user", user);
+
   await prisma.user.update({
     where: { id: user.id },
     data: { onboarded: true },
   });
+
+  const guides = await prisma.guide.findMany({
+    orderBy: { order: "asc" },
+  });
+
+  if (guides.length > 0) {
+    const guideCompletions = guides.map((guide, index) => ({
+      guideId: guide.id,
+      userId: user.id,
+      state:
+        index === 0
+          ? GuideCompletionType.AVAILABLE
+          : GuideCompletionType.LOCKED,
+    }));
+
+    await prisma.guideCompletion.createMany({
+      data: guideCompletions,
+    });
+  }
 
   console.log("onboarded user");
 
   revalidatePath("/");
 
   redirect("/");
+}
+
+export async function markGuideAsFinished(guideId: string, userId: string) {
+  "use server";
+
+  try {
+    // Check if completion record already exists
+    const existingCompletion = await prisma.guideCompletion.findFirst({
+      where: {
+        guideId,
+        userId,
+      },
+    });
+
+    if (existingCompletion) {
+      // Update the state to COMPLETED
+      await prisma.guideCompletion.update({
+        where: { id: existingCompletion.id },
+        data: { state: GuideCompletionType.COMPLETED },
+      });
+
+      const currentGuide = await prisma.guide.findUnique({
+        where: { id: guideId },
+      });
+
+      if (!currentGuide) throw new Error("Guide not found");
+
+      // Find the next guide in order
+      const nextGuide = await prisma.guide.findFirst({
+        where: {
+          order: { gt: currentGuide.order },
+        },
+        orderBy: { order: "asc" },
+      });
+
+      if (nextGuide) {
+        // Update the next guide's completion state to AVAILABLE
+        await prisma.guideCompletion.updateMany({
+          where: {
+            guideId: nextGuide.id,
+            userId,
+          },
+          data: { state: GuideCompletionType.AVAILABLE },
+        });
+      }
+
+      return { success: true, alreadyCompleted: true };
+    }
+
+    return { success: false, error: "Guide completion record not found" };
+  } catch (error) {
+    console.error("Failed to mark guide as finished:", error);
+    return { success: false, error: "Failed to mark guide as finished" };
+  }
 }

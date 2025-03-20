@@ -21,11 +21,11 @@ enum UserType {
 }
 
 model User {
-  id                         String   @id @default(uuid())
+  id                         String            @id @default(uuid())
   name                       String
   phone                      String?
-  onboarded                  Boolean  @default(false)
-  type                       UserType @default(NONE)
+  onboarded                  Boolean           @default(false)
+  type                       UserType          @default(NONE)
   job                        Job?
   numberOfEmployees          Int?
   biggestChallengeQuestion   String?
@@ -36,8 +36,9 @@ model User {
   innovationSupportQuestion  String?
   technologyApproachQuestion String?
   innovationOpinionQuestion  String?
-  createdAt                  DateTime @default(now())
-  updatedAt                  DateTime @updatedAt
+  createdAt                  DateTime          @default(now())
+  updatedAt                  DateTime          @updatedAt
+  GuideCompletion            GuideCompletion[]
 }
 
 enum Job {
@@ -50,6 +51,35 @@ enum Job {
   LOGISTICS
   SOFTWARE
   FINTECH
+}
+
+model Guide {
+  id               String            @id @default(uuid())
+  title            String
+  text             String            @db.Text
+  imageUrl         String?
+  shortTitle       String
+  shortDescription String
+  aiRecommendation String // move this in its own table if we actually implement it
+  order            Int
+  publishedAt      DateTime          @default(now())
+  createdAt        DateTime          @default(now())
+  GuideCompletion  GuideCompletion[]
+}
+
+enum GuideCompletionType {
+  LOCKED
+  AVAILABLE
+  COMPLETED
+}
+
+model GuideCompletion {
+  id      String              @id @default(uuid())
+  guide   Guide               @relation(fields: [guideId], references: [id])
+  user    User                @relation(fields: [userId], references: [id])
+  state   GuideCompletionType
+  guideId String
+  userId  String
 }
 
 model News {
