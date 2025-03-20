@@ -52,21 +52,6 @@ export default function CallDialog() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="name" className="text-sm font-medium">
-              Your name
-            </label>
-            <input
-              id="name"
-              type="text"
-              className="w-full rounded-md border p-2"
-              placeholder="Click to fill name"
-              onClick={(e) => {
-                (e.target as HTMLInputElement).value = "Clark Kent";
-              }}
-            />
-          </div>
-
-          <div className="space-y-2">
             <label htmlFor="time" className="text-sm font-medium">
               Preferred time
             </label>
