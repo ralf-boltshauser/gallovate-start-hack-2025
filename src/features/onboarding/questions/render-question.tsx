@@ -3,17 +3,19 @@ import { Question } from "@/app/components/interactive-form";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/lib/context/user-context";
 import { UserType } from "@prisma/client";
-import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 export function RenderQuestion({
   handleAnswer,
   question,
   answer,
+  myKey: key,
 }: {
   handleAnswer?: (data: any) => void;
   question: Question;
   answer?: string;
+  myKey: string;
 }) {
   const { user } = useUser();
 
@@ -22,7 +24,13 @@ export function RenderQuestion({
     (question.canHesitantSkip && user?.type === UserType.HESITANT);
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1 }}
+      layout
+      key={key}
+    >
       <motion.p
         className="mb-4"
         initial={{ opacity: 0 }}
@@ -72,6 +80,6 @@ export function RenderQuestion({
           Skip to app <ArrowRight className="h-2 w-2 underline" />
         </Button>
       )}
-    </>
+    </motion.div>
   );
 }

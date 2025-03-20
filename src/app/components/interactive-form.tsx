@@ -1,11 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Job, User, UserType } from "@prisma/client";
-import { useUser } from "@/lib/context/user-context";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import CallDialog from "@/features/onboarding/call-dialog";
+import { CompanyQuestion } from "@/features/onboarding/questions/company-question";
 import {
   biggestChallengeAction,
   companyInformationAction,
@@ -17,12 +14,13 @@ import {
   mainChallengeAction,
   technologyApproachAction,
 } from "@/features/onboarding/questions/questions-actions";
-import { CompanyQuestion } from "@/features/onboarding/questions/company-question";
 import { RenderQuestion } from "@/features/onboarding/questions/render-question";
+import { useUser } from "@/lib/context/user-context";
 import { cn } from "@/lib/utils";
+import { User, UserType } from "@prisma/client";
+import { AnimatePresence, motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
 import { onboardUser } from "../actions";
-import { ArrowLeft } from "lucide-react";
-import CallDialog from "@/features/onboarding/call-dialog";
 
 type ButtonQuestion = {
   type: "button";
@@ -350,20 +348,21 @@ export default function ChatOnboarding() {
       <div className="absolute inset-0 flex items-center justify-center ">
         {currentQuestion && (
           <motion.div
-            key={currentKey}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             className="w-10/12 mt-20"
           >
-            <Avatar
-              className={cn(
-                "mb-2 w-16 h-16 transition-colors duration-300",
-                outLineColor
-              )}
-            >
-              <AvatarImage src="simon.png" />
-            </Avatar>
+            <motion.div layout>
+              <Avatar
+                className={cn(
+                  "mb-2 w-16 h-16 transition-colors duration-300",
+                  outLineColor
+                )}
+              >
+                <AvatarImage src="simon.png" />
+              </Avatar>
+            </motion.div>
             <div>
               {currentQuestion.text ===
                 "What's the biggest challenge for your company?" && (
@@ -376,10 +375,16 @@ export default function ChatOnboarding() {
                 </div>
               )}
               {!showGreeting && (
-                <RenderQuestion
-                  question={currentQuestion}
-                  handleAnswer={handleAnswer}
-                />
+                <motion.div
+                  initial={{ height: 0 }}
+                  animate={{ height: "auto" }}
+                >
+                  <RenderQuestion
+                    myKey={currentKey}
+                    question={currentQuestion}
+                    handleAnswer={handleAnswer}
+                  />
+                </motion.div>
               )}
             </div>
           </motion.div>
