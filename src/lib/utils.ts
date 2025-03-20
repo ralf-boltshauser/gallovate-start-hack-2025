@@ -13,14 +13,14 @@ export function getUserBucket({
   | "innovationOpinionQuestion"
 >): UserType {
   if (biggestChallengeQuestion === "STABILITY") {
-    if (technologyApproachQuestion === "Only if necessary")
+    if (technologyApproachQuestion === "ONLY_IF_NECESSARY")
       return UserType.CLUELESS;
-    if (technologyApproachQuestion === "Interesting but cautious")
+    if (technologyApproachQuestion === "INTERESTING_BUT_CAUTIOUS")
       return UserType.HESITANT;
   } else {
-    if (innovationOpinionQuestion === "Necessary but risky")
+    if (innovationOpinionQuestion === "NECESSARY_BUT_RISKY")
       return UserType.HESITANT;
-    if (innovationOpinionQuestion === "Essential for growth")
+    if (innovationOpinionQuestion === "ESSENTIAL_FOR_GROWTH")
       return UserType.MOTIVATED;
   }
 

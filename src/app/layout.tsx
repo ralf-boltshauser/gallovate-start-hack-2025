@@ -3,6 +3,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import type { Metadata } from "next";
 import "./globals.css";
+import { TopNav } from "./features/top-nav";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +19,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <UserProvider>
-          <NuqsAdapter>{children}</NuqsAdapter>
+          <NuqsAdapter>
+            <TopNav />
+            {children}
+          </NuqsAdapter>
         </UserProvider>
       </body>
     </html>

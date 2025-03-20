@@ -1,5 +1,5 @@
-import { InteractiveForm } from "../../components/interactive-form";
+import ChatOnboarding from "@/app/components/interactive-form";
 
 export default function Home() {
-  return <InteractiveForm />;
+  return <ChatOnboarding />;
 }

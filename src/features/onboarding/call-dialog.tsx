@@ -1,5 +1,5 @@
 "use client";
-
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,9 +22,11 @@ export default function CallDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">
-          <ArrowLeft className="w-4 h-4" />
-        </Button>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <Button variant="outline">
+            <ArrowLeft className="w-4 h-4" />
+          </Button>
+        </motion.div>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

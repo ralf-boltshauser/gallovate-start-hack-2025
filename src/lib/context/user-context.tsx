@@ -9,13 +9,14 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { getUserTypeBgColor } from "../user-type";
+import { getUserTypeBgColor, getUserTypeOutlineColor } from "../user-type";
 
 interface UserContextType {
   user: AnonymousUser | null;
   isLoading: boolean;
   error: Error | null;
   bgColor: string;
+  outLineColor: string;
   refetch: () => Promise<void>;
 }
 
@@ -26,6 +27,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const bgColor = getUserTypeBgColor(user?.type || UserType.NONE);
+  const outLineColor = getUserTypeOutlineColor(user?.type || UserType.NONE);
   // function updateTheme(primaryColor: string, backgroundColor: string) {
   //   document.documentElement.style.setProperty("--primary", primaryColor);
   //   document.documentElement.style.setProperty("--background", backgroundColor);
@@ -59,6 +61,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const value = {
     user,
     bgColor,
+    outLineColor,
     isLoading,
     error,
     refetch: fetchUser,

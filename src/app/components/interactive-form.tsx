@@ -1,150 +1,390 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import CallDialog from "@/features/onboarding/call-dialog";
-import BiggestChallengeQuestion from "@/features/onboarding/questions/biggest-challenge-question";
-import CompagnyQuestion from "@/features/onboarding/questions/company-question";
-import CompletionChoiceClueless from "@/features/onboarding/questions/completion-choice-clueless";
-import CompletionChoiceHesitant from "@/features/onboarding/questions/completion-choice-hesitant";
-import DecisionMakingQuestion from "@/features/onboarding/questions/decision-making-question";
-import InnovationBarrierQuestion from "@/features/onboarding/questions/innovation-barrier-question";
-import InnovationOpinionQuestion from "@/features/onboarding/questions/innovation-opinion-question";
-import InnovationSupportQuestion from "@/features/onboarding/questions/innovation-support-question";
-import InnovationTopicsQuestion from "@/features/onboarding/questions/innovation-topics-question";
-import MainChallengeQuestion from "@/features/onboarding/questions/main-challenge-question";
-import TechnologyApproachQuestion from "@/features/onboarding/questions/technology-approach-question";
+import { Job, User, UserType } from "@prisma/client";
 import { useUser } from "@/lib/context/user-context";
-import { User, UserType } from "@prisma/client";
-import { AnimatePresence, motion } from "framer-motion";
-import { useQueryState } from "nuqs";
+import {
+  biggestChallengeAction,
+  companyInformationAction,
+  decisionMakingAction,
+  innovationBarrierAction,
+  innovationOpinionAction,
+  innovationSupportAction,
+  innovationTopicsAction,
+  mainChallengeAction,
+  technologyApproachAction,
+} from "@/features/onboarding/questions/questions-actions";
+import { CompanyQuestion } from "@/features/onboarding/questions/company-question";
+import { RenderQuestion } from "@/features/onboarding/questions/render-question";
+import { cn } from "@/lib/utils";
 import { onboardUser } from "../actions";
+import { ArrowLeft } from "lucide-react";
+import CallDialog from "@/features/onboarding/call-dialog";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const questionFlow: Record<string, any> = {
+type ButtonQuestion = {
+  type: "button";
+  text: string;
+  answers: { label: string; value: string }[];
+  next: (user: User, answer: string) => string | null;
+  action?: (answer: string) => Promise<void>;
+};
+
+type ComponentQuestion = {
+  type: "component";
+  text: string;
+  component: React.FC<any>;
+  next: (user: User) => string | null;
+  action?: (data: any) => Promise<void>;
+};
+
+export type Question = (ButtonQuestion | ComponentQuestion) & {
+  canCluelessSkip?: boolean;
+  canHesitantSkip?: boolean;
+  endOnboarding?: boolean;
+};
+
+const questionFlow: Record<string, Question> = {
   BiggestChallenge: {
-    component: BiggestChallengeQuestion,
+    type: "button",
+    text: "What's the biggest challenge for your company?",
+    answers: [
+      { label: "Stability", value: "STABILITY" },
+      { label: "Being ahead", value: "BEING_AHEAD" },
+    ],
     next: (user: User, answer: string) => {
       if (answer === "STABILITY") return "TechnologyApproachQuestion";
       if (answer === "BEING_AHEAD") return "InnovationOpinionQuestion";
       return null;
     },
-  },
-  TechnologyApproachQuestion: {
-    component: TechnologyApproachQuestion,
-    next: () => "CompagnyQuestion",
-  },
-  InnovationOpinionQuestion: {
-    component: InnovationOpinionQuestion,
-    next: () => "CompagnyQuestion",
-  },
-  CompagnyQuestion: {
-    component: CompagnyQuestion,
-    next: (user: User) => {
-      if (user.type === UserType.CLUELESS) return "CompletionChoiceClueless";
-      return "MainChallengeQuestion";
+    action: async (answer: string) => {
+      await biggestChallengeAction({ challenge: answer });
     },
   },
-  CompletionChoiceClueless: {
-    component: CompletionChoiceClueless,
-    next: (user: User, answer: string) => {
-      if (answer === "true") return "MainChallengeQuestion";
-      return "completed";
+  TechnologyApproachQuestion: {
+    type: "button",
+    text: "How do you approach new technologies?",
+    answers: [
+      {
+        label: "Only if necessary",
+        value: "ONLY_IF_NECESSARY",
+      },
+      {
+        label: "Interesting but cautious",
+        value: "INTERESTING_BUT_CAUTIOUS",
+      },
+    ],
+    next: () => "CompagnyQuestion",
+    action: async (answer: string) => {
+      await technologyApproachAction({ approach: answer });
+    },
+  },
+  InnovationOpinionQuestion: {
+    type: "button",
+    text: "How do you feel about innovation?",
+    answers: [
+      {
+        label: "Necessary but risky",
+        value: "NECESSARY_BUT_RISKY",
+      },
+      {
+        label: "Essential for growth",
+        value: "ESSENTIAL_FOR_GROWTH",
+      },
+    ],
+    next: () => "CompagnyQuestion",
+    action: async (answer: string) => {
+      await innovationOpinionAction({ opinion: answer });
+    },
+  },
+  CompagnyQuestion: {
+    type: "component",
+    component: CompanyQuestion,
+    text: "What's the name of your company?",
+    next: (user: User) => {
+      return "MainChallengeQuestion";
+    },
+    action: async (data: any) => {
+      await companyInformationAction(data);
     },
   },
   MainChallengeQuestion: {
-    component: MainChallengeQuestion,
+    type: "button",
+    text: "What's the main challenge for your company?",
+    answers: [
+      {
+        label: "Cost Pressure",
+        value: "COST_PRESSURE",
+      },
+      {
+        label: "Efficiency",
+        value: "EFFICIENCY",
+      },
+      {
+        label: "Workforce",
+        value: "WORKFORCE",
+      },
+      {
+        label: "Innovation",
+        value: "INNOVATION",
+      },
+    ],
     next: () => "DecisionMakingQuestion",
+    action: async (answer: string) => {
+      await mainChallengeAction({ challenge: answer });
+    },
+    canCluelessSkip: true,
   },
   DecisionMakingQuestion: {
-    component: DecisionMakingQuestion,
+    type: "button",
+    text: "How do you make major business decisions?",
+    answers: [
+      {
+        label: "Suppliers",
+        value: "SUPPLIERS",
+      },
+      {
+        label: "Internal Team",
+        value: "INTERNAL_TEAM",
+      },
+      {
+        label: "Industry Trends",
+        value: "INDUSTRY_TRENDS",
+      },
+    ],
     next: () => "InnovationTopicsQuestion",
+    action: async (answer: string) => {
+      await decisionMakingAction({ decisionMethod: answer });
+    },
+    canCluelessSkip: true,
   },
   InnovationTopicsQuestion: {
-    component: InnovationTopicsQuestion,
+    type: "button",
+    text: "What innovation topics are you most interested in?",
+    answers: [
+      {
+        label: "Automation",
+        value: "AUTOMATION",
+      },
+      {
+        label: "Digitalization",
+        value: "DIGITALIZATION",
+      },
+      {
+        label: "Sustainability",
+        value: "SUSTAINABILITY",
+      },
+      {
+        label: "Process Optimization",
+        value: "PROCESS_OPTIMIZATION",
+      },
+    ],
     next: (user: User) => {
-      if (user.type === UserType.HESITANT) return "CompletionChoiceHesitant";
       return "InnovationBarrierQuestion";
     },
-  },
-  CompletionChoiceHesitant: {
-    component: CompletionChoiceHesitant,
-    next: (user: User, answer: string) => {
-      if (answer === "true") return "InnovationBarrierQuestion";
-      return "completed";
+    action: async (answer: string) => {
+      await innovationTopicsAction({ topic: answer });
     },
+    canCluelessSkip: true,
   },
   InnovationBarrierQuestion: {
-    component: InnovationBarrierQuestion,
+    type: "button",
+    text: "What's your biggest barrier to innovation?",
+    answers: [
+      {
+        label: "Cost",
+        value: "COST",
+      },
+      {
+        label: "Expertise",
+        value: "EXPERTISE",
+      },
+      {
+        label: "Risk",
+        value: "RISK",
+      },
+    ],
     next: () => "InnovationSupportQuestion",
+    action: async (answer: string) => {
+      await innovationBarrierAction({ barrier: answer });
+    },
+    canCluelessSkip: true,
+    canHesitantSkip: true,
   },
   InnovationSupportQuestion: {
-    component: InnovationSupportQuestion,
+    type: "button",
+    text: "What innovation-related support are you looking for?",
+    answers: [
+      {
+        label: "Funding Opportunities",
+        value: "FUNDING_OPPORTUNITIES",
+      },
+      {
+        label: "Technology Trends",
+        value: "TECHNOLOGY_TRENDS",
+      },
+      {
+        label: "Strategic Guidance",
+        value: "STRATEGIC_GUIDANCE",
+      },
+      {
+        label: "Networking",
+        value: "NETWORKING",
+      },
+    ],
     next: () => "completed",
+    action: async (answer: string) => {
+      await innovationSupportAction({ support: answer });
+    },
+    canCluelessSkip: true,
+    canHesitantSkip: true,
+    endOnboarding: true,
   },
 };
 
-export function InteractiveForm() {
-  const { user, refetch } = useUser(); // Access user data including previous answers
-  const [currentQuestionKey, setCurrentQuestionKey] = useQueryState(
-    "questionKey",
-    { defaultValue: "BiggestChallenge" }
-  );
+type QuestionHistoryItem = {
+  question: Question;
+  answer: string | any;
+};
 
-  // Start with the first question if not set
-  const currentQuestion =
-    questionFlow[currentQuestionKey ?? "BiggestChallenge"];
+export default function ChatOnboarding() {
+  const [currentKey, setCurrentKey] = useState("BiggestChallenge");
+  const [history, setHistory] = useState<QuestionHistoryItem[]>([]);
+  const { user, outLineColor, refetch } = useUser();
+  const [showGreeting, setShowGreeting] = useState(true);
 
-  const handleComplete = (answer: string) => {
-    refetch(); // Update user data
-    const nextQuestionKey = currentQuestion.next(user, answer);
-    setCurrentQuestionKey(nextQuestionKey ?? "completed"); // Set next question or mark as completed
+  const currentQuestion = questionFlow[currentKey];
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowGreeting(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleAnswer = async (answer: string | any) => {
+    // Perform any action associated with the current question.
+    if (currentQuestion.action) {
+      await currentQuestion.action(answer);
+    }
+
+    // refetch user
+    refetch();
+
+    if (!user) return;
+
+    // Add the current question (with the chosen answer) to the history.
+    setHistory((prev) => [
+      ...prev,
+      {
+        question: currentQuestion,
+        answer,
+      },
+    ]);
+
+    if (currentQuestion.endOnboarding) {
+      onboardUser();
+    }
+
+    // Load the next question.
+    const nextKey = currentQuestion.next(user, answer);
+    if (nextKey) {
+      setCurrentKey(nextKey);
+    } else {
+      setCurrentKey("");
+    }
   };
 
-  const handleOnboarded = async () => {
-    await onboardUser();
-    window.location.reload();
-  };
+  // Calculate progress
+  const progress =
+    (history.length / (Object.keys(questionFlow).length - 1)) * 100;
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-background to-secondary/20 flex items-center justify-center p-4">
-      <div className="fixed top-4 left-4">
-        <CallDialog />
+    <div className="relative min-h-[calc(100vh-5rem)] bg-gray-50">
+      {/* Progress bar */}
+      <div className="absolute top-0 left-0 right-0 h-0.5 bg-gray-200 z-[1000]">
+        <motion.div
+          className="h-full bg-[#009639] transition-all duration-300"
+          style={{ width: `${progress}%` }}
+        />
       </div>
-      <div className="max-w-xl w-full space-y-8 animate-fade-in">
-        {/* Avatar and greeting */}
-        <div className="flex items-center space-x-4">
-          <Avatar className="h-16 w-16 ring-2 ring-primary/20 animate-bounce-slow">
-            <AvatarImage src="https://avatars.githubusercontent.com/u/124599?v=4" />
-            <AvatarFallback>AI</AvatarFallback>
-          </Avatar>
-          <div className="space-y-1">
-            <h2 className="text-xl font-semibold tracking-tight">
-              Hey there! 👋
-            </h2>
-            <p className="text-muted-foreground">
-              Let&apos;s get to know you better
-            </p>
-          </div>
+
+      {/* Leave bottom for clueless */}
+      {user?.type === UserType.CLUELESS && (
+        <div className="absolute top-5 left-5 z-[1000]">
+          <CallDialog />
         </div>
+      )}
 
-        {/* Current question */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentQuestionKey}
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -20, opacity: 0 }}
-            className="space-y-8"
-          >
-            {currentQuestion?.component && (
-              <currentQuestion.component onCompleted={handleComplete} />
-            )}
-          </motion.div>
-        </AnimatePresence>
+      {/* Fading gradient overlay */}
+      <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-gray-50 to-transparent pointer-events-none z-50" />
 
-        <Button onClick={handleOnboarded}>Onboard</Button>
+      {/* History container: occupies top half; messages are anchored to its bottom */}
+      <div className="absolute top-0 left-0 right-0 bottom-1/2 pointer-events-none">
+        <div className="absolute bottom-3/5 left-0 right-0 flex flex-col items-center space-y-12">
+          <AnimatePresence>
+            {history.map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 40 }}
+                transition={{ duration: 0.2 }}
+                className="w-10/12"
+              >
+                <div>
+                  <RenderQuestion
+                    question={item.question}
+                    answer={item.answer}
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
       </div>
-    </main>
+
+      {/* Current question container: always centered */}
+      <div className="absolute inset-0 flex items-center justify-center ">
+        {currentQuestion && (
+          <motion.div
+            key={currentKey}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="w-10/12 mt-20"
+          >
+            <Avatar
+              className={cn(
+                "mb-2 w-16 h-16 transition-colors duration-300",
+                outLineColor
+              )}
+            >
+              <AvatarImage src="simon.png" />
+            </Avatar>
+            <div>
+              {currentQuestion.text ===
+                "What's the biggest challenge for your company?" && (
+                <div className="mb-4">
+                  <h1 className="text-2xl font-bold">Hey! I'm Simon</h1>
+                  <p className="text-lg">
+                    Your personal innovation guide. Let's start shaping your
+                    unique path to innovation.
+                  </p>
+                </div>
+              )}
+              {!showGreeting && (
+                <RenderQuestion
+                  question={currentQuestion}
+                  handleAnswer={handleAnswer}
+                />
+              )}
+            </div>
+          </motion.div>
+        )}
+      </div>
+    </div>
   );
 }
