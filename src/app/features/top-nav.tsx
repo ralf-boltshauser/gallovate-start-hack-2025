@@ -17,13 +17,17 @@ export function TopNav({ children }: { children?: React.ReactNode }) {
           width={180}
           height={180}
         />
-        {user && user?.type !== UserType.NONE ? (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <Badge variant={user?.type}>{user?.type}</Badge>
-          </motion.div>
-        ) : (
-          <div className="w-6 h-6 bg-gray-200 rounded-full" />
-        )}
+        {children || user?.type !== UserType.NONE ? (
+          <>
+            {user && user?.type !== UserType.NONE ? (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <Badge variant={user?.type}>{user?.type}</Badge>
+              </motion.div>
+            ) : (
+              <div className="w-6 h-6 bg-gray-200 rounded-full" />
+            )}
+          </>
+        ) : null}
       </div>
     </div>
   );
