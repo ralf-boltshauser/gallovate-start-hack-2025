@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Innovation Hub - Start Hack 2025
 
-## Getting Started
+<div align="center">
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-15.2.3-black?logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/React-19.0.0-blue?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.8.2-blue?logo=typescript&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-6.5.0-blue?logo=prisma&logoColor=white)
 
+</div>
+
+## 🌟 About the Project
+
+Welcome to Innovation Hub, our exciting submission for Start Hack 2025! This project represents our team's vision for making innovation accessible to everyone. We've built a comprehensive platform that combines cutting-edge technology with practical guidance to help businesses and individuals transform their innovative ideas into reality.
+
+### 🎯 Key Features
+
+- **🤖 AI-Powered Guidance**: Get instant, personalized answers to your innovation questions
+- **📚 Structured Learning Paths**: Step-by-step guides tailored to your industry
+- **📰 Industry-Specific News**: Stay updated with the latest developments in your sector
+- **🎯 Personalized Experience**: Content and recommendations based on your profile and needs
+- **📊 Progress Tracking**: Monitor your innovation journey with our intuitive tracking system
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Next.js 15.2.3, React 19, TypeScript
+- **Styling**: Tailwind CSS, Framer Motion
+- **Database**: PostgreSQL with Prisma ORM
+- **UI Components**: Radix UI
+- **AI Integration**: OpenAI SDK
+- **Authentication**: Next.js Auth
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- pnpm (recommended) or npm
+- PostgreSQL database
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/innovation-hub.git
+cd innovation-hub
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+pnpm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up your environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Set up the database:
+```bash
+pnpm prisma generate
+pnpm prisma migrate dev
+```
 
-## Learn More
+5. Run the development server:
+```bash
+pnpm dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open [http://localhost:3000](http://localhost:3000) to see the result.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🏗️ Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/                    # Next.js app directory
+│   ├── (app)/             # Main application routes
+│   ├── (onboarding)/      # Onboarding flow
+│   ├── api/               # API routes
+│   └── components/        # Shared components
+├── lib/                   # Utility functions and hooks
+└── prisma/               # Database schema and migrations
+```
 
-## Deploy on Vercel
+## 🤝 Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+We welcome contributions! Please feel free to submit a Pull Request.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Our amazing team members who worked tirelessly on this project
+- The Start Hack 2025 organizers for this incredible opportunity
+- All the open-source tools and libraries that made this project possible
+
+---
+
+<div align="center">
+Made with ❤️ for Start Hack 2025
+</div>
