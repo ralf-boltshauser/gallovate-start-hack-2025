@@ -42,7 +42,7 @@ Welcome to Innovation Hub, our exciting submission for Start Hack 2025! This pro
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/innovation-hub.git
+git clone https://github.com/ralf-boltshauser/gallovate-start-hack-2025
 cd innovation-hub
 ```
 
