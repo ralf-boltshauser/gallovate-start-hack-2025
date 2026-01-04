@@ -29,7 +29,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.5.0",
     "lucide-react": "^0.483.0",
-    "next": "15.2.3",
+    "next": "15.2.8",
     "next-safe-action": "^7.10.4",
     "nuqs": "^2.4.1",
     "react": "^19.0.0",
